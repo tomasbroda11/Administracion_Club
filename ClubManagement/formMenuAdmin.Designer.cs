@@ -41,18 +41,17 @@
             // 
             lblMenu.AutoSize = true;
             lblMenu.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
-            lblMenu.Location = new Point(225, 12);
+            lblMenu.Location = new Point(197, 9);
             lblMenu.Name = "lblMenu";
-            lblMenu.Size = new Size(397, 46);
+            lblMenu.Size = new Size(320, 37);
             lblMenu.TabIndex = 1;
             lblMenu.Text = "Panel de Administrador";
             // 
             // btnProfesores
             // 
-            btnProfesores.Location = new Point(303, 228);
-            btnProfesores.Margin = new Padding(3, 4, 3, 4);
+            btnProfesores.Location = new Point(265, 171);
             btnProfesores.Name = "btnProfesores";
-            btnProfesores.Size = new Size(184, 44);
+            btnProfesores.Size = new Size(161, 33);
             btnProfesores.TabIndex = 3;
             btnProfesores.Text = "Profesores";
             btnProfesores.UseVisualStyleBackColor = true;
@@ -60,10 +59,9 @@
             // 
             // btnSocios
             // 
-            btnSocios.Location = new Point(303, 176);
-            btnSocios.Margin = new Padding(3, 4, 3, 4);
+            btnSocios.Location = new Point(265, 132);
             btnSocios.Name = "btnSocios";
-            btnSocios.Size = new Size(184, 44);
+            btnSocios.Size = new Size(161, 33);
             btnSocios.TabIndex = 4;
             btnSocios.Text = "Socios";
             btnSocios.UseVisualStyleBackColor = true;
@@ -72,41 +70,38 @@
             // btnReservas
             // 
             btnReservas.BackColor = Color.FromArgb(192, 192, 255);
-            btnReservas.Location = new Point(303, 107);
-            btnReservas.Margin = new Padding(3, 4, 3, 4);
+            btnReservas.Location = new Point(265, 80);
             btnReservas.Name = "btnReservas";
-            btnReservas.Size = new Size(184, 44);
+            btnReservas.Size = new Size(161, 33);
             btnReservas.TabIndex = 5;
             btnReservas.Text = "Reservas de Hoy";
             btnReservas.UseVisualStyleBackColor = false;
             // 
             // button3
             // 
-            button3.Location = new Point(303, 280);
-            button3.Margin = new Padding(3, 4, 3, 4);
+            button3.Location = new Point(265, 210);
             button3.Name = "button3";
-            button3.Size = new Size(184, 44);
+            button3.Size = new Size(161, 33);
             button3.TabIndex = 6;
             button3.Text = "Actividades";
             button3.UseVisualStyleBackColor = true;
             // 
             // btnInstalaciones
             // 
-            btnInstalaciones.Location = new Point(303, 332);
-            btnInstalaciones.Margin = new Padding(3, 4, 3, 4);
+            btnInstalaciones.Location = new Point(265, 249);
             btnInstalaciones.Name = "btnInstalaciones";
-            btnInstalaciones.Size = new Size(184, 44);
+            btnInstalaciones.Size = new Size(161, 33);
             btnInstalaciones.TabIndex = 7;
             btnInstalaciones.Text = "Instalaciones";
             btnInstalaciones.UseVisualStyleBackColor = true;
+            btnInstalaciones.Click += btnInstalaciones_Click;
             // 
             // btn_menu_salir
             // 
             btn_menu_salir.BackColor = Color.LightCoral;
-            btn_menu_salir.Location = new Point(303, 391);
-            btn_menu_salir.Margin = new Padding(3, 4, 3, 4);
+            btn_menu_salir.Location = new Point(265, 293);
             btn_menu_salir.Name = "btn_menu_salir";
-            btn_menu_salir.Size = new Size(184, 44);
+            btn_menu_salir.Size = new Size(161, 33);
             btn_menu_salir.TabIndex = 8;
             btn_menu_salir.Text = "Salir";
             btn_menu_salir.UseVisualStyleBackColor = false;
@@ -114,9 +109,9 @@
             // 
             // formMenuAdmin
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 451);
+            ClientSize = new Size(700, 338);
             Controls.Add(btn_menu_salir);
             Controls.Add(btnInstalaciones);
             Controls.Add(button3);
@@ -124,6 +119,7 @@
             Controls.Add(btnSocios);
             Controls.Add(btnProfesores);
             Controls.Add(lblMenu);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "formMenuAdmin";
             Text = "Admin";
             Load += formMenuAdmin_Load;

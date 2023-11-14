@@ -40,6 +40,7 @@ namespace Datos
                             (
                                 int.Parse(reader["idInstalacion"].ToString()),
                                 reader["insDescripcion"].ToString(),
+                                0,
                                 new Actividad
                                 (
                                     int.Parse(reader["idActividad"].ToString()),
@@ -85,6 +86,7 @@ namespace Datos
                             (
                                 int.Parse(reader["idInstalacion"].ToString()),
                                 reader["insDescripcion"].ToString(),
+                                0,
                                 new Actividad
                                 (
                                     int.Parse(reader["idActividad"].ToString()),
@@ -131,6 +133,7 @@ namespace Datos
                             (
                                 int.Parse(reader["idInstalacion"].ToString()),
                                 descInstalacion,
+                                0,
                                 new Actividad
                                 (
                                     int.Parse(reader["idActividad"].ToString()),

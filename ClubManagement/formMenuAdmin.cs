@@ -40,8 +40,16 @@ namespace ClubManagement
         private void btnProfesores_Click(object sender, EventArgs e)
         {
             this.Hide();
-            formProfesores formProfe= new formProfesores();
+            formProfesores formProfe = new formProfesores();
             formProfe.ShowDialog();
+            this.Close();
+        }
+
+        private void btnInstalaciones_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            formInstalaciones formInstalacion = new formInstalaciones();
+            formInstalacion.ShowDialog();
             this.Close();
         }
     }

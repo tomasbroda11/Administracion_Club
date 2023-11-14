@@ -44,5 +44,10 @@ namespace Negocio
         {
             di.deleteInstalacion(id);
         }
+
+        public void bajaLogica(int id)
+        {
+            di.bajaLogica(id);
+        }
     }
 }

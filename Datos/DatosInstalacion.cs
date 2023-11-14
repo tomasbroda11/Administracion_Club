@@ -18,7 +18,7 @@ namespace Datos
             List<Instalacion> instalaciones = new List<Instalacion>();
 
             SqlConnection connection = Conexion.openConection();
-            string query = "SELECT idInstalacion, ins.descripcion as 'descIns', ins.idActividad, act.descripcion as 'descAct' FROM instalaciones ins inner join actividades act on ins.idActividad = act.idActividad;";
+            string query = "SELECT idInstalacion, ins.descripcion as 'descIns', ins.activo, ins.idActividad, act.descripcion as 'descAct' FROM instalaciones ins inner join actividades act on ins.idActividad = act.idActividad;";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -30,6 +30,7 @@ namespace Datos
                         (
                             int.Parse(reader["idInstalacion"].ToString()),
                             reader["descIns"].ToString(),
+                            (bool)reader["activo"] ? 1 : 0,
                             new Actividad(
                                 int.Parse(reader["idActividad"].ToString()),
                                 reader["descAct"].ToString(),
@@ -63,6 +64,7 @@ namespace Datos
                         (
                             int.Parse(reader["idInstalacion"].ToString()),
                             reader["descripcion"].ToString(),
+                            0,
                             new Actividad 
                             (
                                 int.Parse(reader["idActividad"].ToString()),
@@ -97,6 +99,7 @@ namespace Datos
                             
                             int.Parse(reader["idInstalacion"].ToString()),
                             descIns,
+                            0,
                             new Actividad
                             (
                                 int.Parse(reader["idActividad"].ToString()),
@@ -132,6 +135,7 @@ namespace Datos
 
                             id,
                             reader["descIns"].ToString(),
+                            0,
                             new Actividad
                             (
                                 int.Parse(reader["idActividad"].ToString()),
@@ -157,11 +161,13 @@ namespace Datos
                 connection = Conexion.openConection();
 
                 // Consulta SQL para buscar la persona por DNI y contraseña
-                string query = "INSERT INTO instalaciones VALUES (@Descripcion, @IdActividad)";
+                string query = "INSERT INTO instalaciones VALUES (@Id, @Descripcion, @Activo, @IdActividad)";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
+                    command.Parameters.AddWithValue("@Id", instalacion.getId());
                     command.Parameters.AddWithValue("@Descripcion", instalacion.getDescripcion());
+                    command.Parameters.AddWithValue("@Activo", instalacion.getActivo());
                     command.Parameters.AddWithValue("@IdActividad", instalacion.Actividad.getId());                    
 
                     int rowsAffected = command.ExecuteNonQuery();
@@ -189,14 +195,14 @@ namespace Datos
 
                 connection = Conexion.openConection();
 
-                // Consulta SQL para buscar la persona por DNI y contraseña
-                string query = "UPDATE instalaciones SET descripcion = @Descripcion, idActividad = @IdActividad WHERE idInstalacion = @IdIns";
+                string query = "UPDATE instalaciones SET descripcion = @Descripcion, activo = @Activo, idActividad = @IdActividad WHERE idInstalacion = @IdIns";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
+                    command.Parameters.AddWithValue("@IdIns", instalacion.getId());
+                    command.Parameters.AddWithValue("@Activo", instalacion.getActivo());
                     command.Parameters.AddWithValue("@Descripcion", instalacion.getDescripcion());
                     command.Parameters.AddWithValue("@IdActividad", instalacion.Actividad.getId());
-                    command.Parameters.AddWithValue("@IdIns", instalacion.getId());
 
                     command.ExecuteNonQuery();
                 }
@@ -220,6 +226,20 @@ namespace Datos
             using (SqlConnection connection = Conexion.openConection())
             {
                 string query = "DELETE FROM instalaciones WHERE idInstalacion = @Id";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", id);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void bajaLogica(int id)
+        {
+            using (SqlConnection connection = Conexion.openConection())
+            {
+                string query = "UPDATE instalaciones SET activo = 0 WHERE idInstalacion = @Id;";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Id", id);
