@@ -68,6 +68,33 @@ namespace Datos
             Conexion.closeConnection(connection);
 
             return act;
+        } public Actividad obtenerActividadXDescripcion(string desc)
+        {
+
+            SqlConnection connection = Conexion.openConection();
+            string query = "select act.idActividad, act.descripcion from actividades act where act.descripcion = @desc;";
+
+            Actividad act = null;
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@desc", desc);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        act = new Actividad
+                            (
+                                int.Parse(reader["idActividad"].ToString()),
+                                reader["descripcion"].ToString(),
+                                0
+                            );
+                    }
+                }
+            }
+
+            Conexion.closeConnection(connection);
+
+            return act;
         }
 
         public int addActividad(Actividad actividad)

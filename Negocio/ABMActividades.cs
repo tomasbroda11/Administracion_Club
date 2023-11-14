@@ -21,6 +21,9 @@ namespace Negocio
         public Actividad obtenerActividadPorId(int id)
         {
             return da.obtenerActividadXId(id);
+        }public Actividad obtenerActividadPorDesc(string desc)
+        {
+            return da.obtenerActividadXDescripcion(desc);
         }
 
         public int add(Actividad actividad)
