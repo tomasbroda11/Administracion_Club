@@ -7,8 +7,14 @@ namespace Entidades
 {
     public class Profesor : Persona
     {
-        public Profesor(int dni, string nombre, string apellido, string mail, string password, string rol): base(dni, nombre, apellido, mail, password, "entrenador")
+        public Profesor(int dni, string nombre, string apellido, string mail, string password, string rol, Actividad actividad): base(dni, nombre, apellido, mail, password, "profesor")
         {
+            this.Actividad = actividad; 
+        }
+        Actividad Actividad { get; set; }
+        public Actividad getActividad()
+        {
+            return this.Actividad;
         }
     }
 }

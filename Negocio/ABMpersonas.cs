@@ -19,7 +19,7 @@ namespace Negocio
 
         public List<Profesor> obtenerProfesores()
         {
-            return dp.ObtenerEntrenadores();
+            return dp.ObtenerProfesores();
         }
         public Persona validarInicio(string dni, string pass)
         {
@@ -57,6 +57,7 @@ namespace Negocio
         {
             return dp.getPersonaByDNI(dni);
         }
+        
 
     }
 }

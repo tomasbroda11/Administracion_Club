@@ -46,12 +46,12 @@ namespace Datos
             return personas;
         }
 
-        public List<Profesor> ObtenerEntrenadores()
+        public List<Profesor> ObtenerProfesores()
         {
-            List<Profesor> entrenadores = new List<Profesor>();
+            List<Profesor> profesores = new List<Profesor>();
 
             SqlConnection connection = Conexion.openConection();
-            string query = "SELECT dni, nombre, apellido, email,rol FROM personas where rol='profesor';";
+            string query = "select per.dni, per.nombre, per.apellido, per.email, per.idActividad from personas per left join actividades act on act.idActividad = per.idActividad where per.rol = 'profesor';";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -59,6 +59,8 @@ namespace Datos
                 {
                     while (reader.Read())
                     {
+                        
+                        Actividad act = new DatosActividades().obtenerActividadXId(int.Parse(reader["idActividad"].ToString()));
                         Profesor profesor = new Profesor
                         (
                             int.Parse(reader["dni"].ToString()),
@@ -66,26 +68,26 @@ namespace Datos
                             reader["apellido"].ToString(),
                             reader["email"].ToString(),
                             "",
-                            reader["rol"].ToString()
+                            "",
+                            act
                         );
-                        entrenadores.Add(profesor);
+                        profesores.Add(profesor);
                     }
                 }
             }
 
             Conexion.closeConnection(connection);
 
-            return entrenadores;
+            return profesores;
         }
 
         public Persona getPersona(string dni, string password)
         {
             Persona personaEncontrada = null;
-            //Abrir conexion
-
+           
             SqlConnection connection = Conexion.openConection();
 
-            // Consulta SQL para buscar la persona por DNI y contraseña
+           
             string query = "SELECT * FROM personas p WHERE p.dni=@DNI and p.password=@password";
 
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -106,9 +108,10 @@ namespace Datos
                             string mail = reader["email"].ToString();
                             string rol = reader["rol"].ToString();
 
-                            if(rol == "entrenador")
+                            if(rol == "profesor")
                             {
-                                personaEncontrada = new Profesor(numDoc, nombre, apellido, mail, pass, rol);
+                                Actividad act = new DatosActividades().obtenerActividadXId(int.Parse(reader["idActividad"].ToString()));
+                                personaEncontrada = new Profesor(numDoc, nombre, apellido, mail, pass, rol, act);
                             } else
                             {
                                 personaEncontrada = new Persona(numDoc, nombre, apellido, mail, pass,rol);
@@ -311,5 +314,6 @@ namespace Datos
             return personas;
         }
     }
+
 
 }
