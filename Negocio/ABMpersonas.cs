@@ -33,7 +33,7 @@ namespace Negocio
 
         public int addProfesor(Profesor profesor)
         {
-            return dp.addPersona(profesor);
+            return dp.addProfesor(profesor);
         }
 
         public void update(Persona p)

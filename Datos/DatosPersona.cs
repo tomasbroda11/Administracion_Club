@@ -313,6 +313,49 @@ namespace Datos
 
             return personas;
         }
+        public int addProfesor(Profesor profesor)
+        {
+            SqlConnection connection = null;
+            try
+            {
+                if (validarDuplicado(profesor.getDni()) == 2)
+                {
+                    return 2;
+                }
+                else
+                {
+                    connection = Conexion.openConection();
+
+                    // Consulta SQL para buscar la persona por DNI y contraseña
+                    string query = "INSERT INTO personas VALUES (@dni, @nombre, @apellido, @mail, @password, @rol, @idActividad)";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@dni", profesor.getDni());
+                        command.Parameters.AddWithValue("@nombre", profesor.getNombre());
+                        command.Parameters.AddWithValue("@apellido", profesor.getApellido());
+                        command.Parameters.AddWithValue("@mail", profesor.getMail());
+                        command.Parameters.AddWithValue("@password", profesor.getPassword());
+                        command.Parameters.AddWithValue("@rol", profesor.getRol());
+                        command.Parameters.AddWithValue("@idActividad", profesor.getActividad().getId());
+
+                        int rowsAffected = command.ExecuteNonQuery();
+                        return rowsAffected;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+            finally
+            {
+                if (connection != null)
+                {
+                    Conexion.closeConnection(connection);
+                }
+            }
+        }
     }
 
 
