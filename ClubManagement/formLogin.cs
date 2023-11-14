@@ -49,7 +49,7 @@ namespace ClubManagement
                         else
                         {
                             this.Hide();
-                            formMenuProfe formMenuProf = new formMenuProfe();
+                            formMenuProfe formMenuProf = new formMenuProfe((Profesor)p);
                             formMenuProf.ShowDialog();
                         }
                     }

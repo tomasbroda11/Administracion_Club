@@ -12,18 +12,58 @@ namespace Datos
     {
         public DatosEntrenamiento() { }
 
-        public bool ExisteEntrenamientoEnFechaYHora(int dia, TimeOnly hora, Instalacion instalacion)
+        public Entrenamiento obtenerEntrenamiento(int id)
+        {
+            Entrenamiento e = null;
+            //Abrir conexion
+            SqlConnection connection = Conexion.openConection();
+
+            string query = "SELECT * FROM entrenamientos e WHERE e.idEntrenamiento=@Id";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@Id", id);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    try
+                    {
+                        if (reader.Read())
+                        {
+                            int idEntrenamiento = (int)reader["idEntrenamiento"];
+                            TimeOnly horaDesde = (TimeOnly)reader["horaDesde"];
+                            TimeOnly horaHasta = (TimeOnly)reader["horaHasta"];
+                            int dia = (int)reader["dia"];
+                            Instalacion ins = new DatosInstalacion().obtenerInstalacionXId((int)reader["idInstalacion"]);
+                            Profesor profesor = (Profesor)new DatosPersona().getPersonaByDNI(reader["idProfesor"].ToString());
+
+                            e = new Entrenamiento(idEntrenamiento, horaDesde, horaHasta, dia, ins, profesor);
+                        }
+                    }
+                    catch
+                    {
+                        Conexion.closeConnection(connection);
+                        return null;
+                    }
+                }
+            }
+            Conexion.closeConnection(connection);
+
+            return e;
+        }
+        public bool ExisteEntrenamientoEnFechaYHora(int dia, TimeOnly horaD, TimeOnly horaH, Instalacion instalacion)
         {
             using (SqlConnection connection = Conexion.openConection())
             {
                 string query = "SELECT COUNT(*) FROM entrenamientos " +
-                               "WHERE dia = @Dia AND horaDesde <= @Hora AND horaHasta > @Hora " +
+                               "WHERE dia = @Dia AND horaDesde <= @HoraHasta AND horaHasta > @HoraDesde " +
                                "AND idInstalacion = @InstalacionId";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Dia", dia);
-                    command.Parameters.AddWithValue("@Hora", hora);
+                    command.Parameters.AddWithValue("@HoraHasta", horaH);
+                    command.Parameters.AddWithValue("@HoraDesde", horaD);
                     command.Parameters.AddWithValue("@InstalacionId", instalacion.getId());
 
                     int count = (int)command.ExecuteScalar();
