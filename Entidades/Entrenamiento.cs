@@ -15,6 +15,7 @@ namespace Entidades
         public Instalacion Instalacion { get; set; }
         public Profesor Profesor { get; set; }
 
+        public Entrenamiento() { }
         public Entrenamiento(int idEntrenamiento, TimeOnly horaDesde, TimeOnly horaHasta, int dia,Instalacion instalacion, Profesor profesor)
         {
             IdEntrenamiento = idEntrenamiento;

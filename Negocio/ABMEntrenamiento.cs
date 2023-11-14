@@ -12,9 +12,13 @@ namespace Negocio
     {
         DatosEntrenamiento de = new DatosEntrenamiento();
 
-        public bool ExisteEntrenamientoEnFechaYHora(int dia, TimeOnly hora, Instalacion instalacion)
+        public Entrenamiento obtenerEntrenamientoXId(int id)
         {
-            return de.ExisteEntrenamientoEnFechaYHora(dia, hora, instalacion);
+            return de.obtenerEntrenamiento(id);
+        }
+        public bool ExisteEntrenamientoEnFechaYHora(int dia, TimeOnly horaDesde, TimeOnly horaHasta, Instalacion instalacion)
+        {
+            return de.ExisteEntrenamientoEnFechaYHora(dia, horaDesde ,horaHasta, instalacion);
         }
 
         public void CrearEntrenamiento(Entrenamiento entrenamiento)
