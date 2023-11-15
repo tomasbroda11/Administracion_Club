@@ -28,51 +28,79 @@
         /// </summary>
         private void InitializeComponent()
         {
-            radbutTotalReservas = new RadioButton();
-            radbutPorActividad = new RadioButton();
+            radbutReservasMes = new RadioButton();
+            radbutReservasActividad = new RadioButton();
+            button1 = new Button();
+            btnImprimir = new Button();
             SuspendLayout();
             // 
-            // radbutTotalReservas
+            // radbutReservasMes
             // 
-            radbutTotalReservas.AutoSize = true;
-            radbutTotalReservas.Location = new Point(978, 12);
-            radbutTotalReservas.Name = "radbutTotalReservas";
-            radbutTotalReservas.Size = new Size(120, 24);
-            radbutTotalReservas.TabIndex = 0;
-            radbutTotalReservas.TabStop = true;
-            radbutTotalReservas.Text = "Total reservas";
-            radbutTotalReservas.UseVisualStyleBackColor = true;
-            radbutTotalReservas.CheckedChanged += radbutTotalReservas_CheckedChanged;
+            radbutReservasMes.AutoSize = true;
+            radbutReservasMes.Location = new Point(581, 25);
+            radbutReservasMes.Margin = new Padding(3, 2, 3, 2);
+            radbutReservasMes.Name = "radbutReservasMes";
+            radbutReservasMes.Size = new Size(116, 19);
+            radbutReservasMes.TabIndex = 0;
+            radbutReservasMes.TabStop = true;
+            radbutReservasMes.Text = "Reservas por Mes";
+            radbutReservasMes.UseVisualStyleBackColor = true;
             // 
-            // radbutPorActividad
+            // radbutReservasActividad
             // 
-            radbutPorActividad.AutoSize = true;
-            radbutPorActividad.Location = new Point(981, 42);
-            radbutPorActividad.Name = "radbutPorActividad";
-            radbutPorActividad.Size = new Size(116, 24);
-            radbutPorActividad.TabIndex = 1;
-            radbutPorActividad.TabStop = true;
-            radbutPorActividad.Text = "Por actividad";
-            radbutPorActividad.UseVisualStyleBackColor = true;
-            radbutPorActividad.CheckedChanged += radbutPorActividad_CheckedChanged;
+            radbutReservasActividad.AutoSize = true;
+            radbutReservasActividad.Location = new Point(581, 48);
+            radbutReservasActividad.Margin = new Padding(3, 2, 3, 2);
+            radbutReservasActividad.Name = "radbutReservasActividad";
+            radbutReservasActividad.Size = new Size(144, 19);
+            radbutReservasActividad.TabIndex = 1;
+            radbutReservasActividad.TabStop = true;
+            radbutReservasActividad.Text = "Reservas por Actividad";
+            radbutReservasActividad.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            button1.BackColor = Color.FromArgb(224, 224, 224);
+            button1.Location = new Point(12, 12);
+            button1.Name = "button1";
+            button1.Size = new Size(83, 28);
+            button1.TabIndex = 2;
+            button1.Text = "Volver";
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
+            // 
+            // btnImprimir
+            // 
+            btnImprimir.BackColor = Color.FromArgb(128, 255, 255);
+            btnImprimir.Location = new Point(620, 98);
+            btnImprimir.Name = "btnImprimir";
+            btnImprimir.Size = new Size(66, 47);
+            btnImprimir.TabIndex = 3;
+            btnImprimir.Text = "Imprimir";
+            btnImprimir.UseVisualStyleBackColor = false;
+            btnImprimir.Click += btnImprimir_Click;
             // 
             // formPresentacionReservas
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1110, 606);
-            Controls.Add(radbutPorActividad);
-            Controls.Add(radbutTotalReservas);
+            ClientSize = new Size(737, 486);
+            Controls.Add(btnImprimir);
+            Controls.Add(button1);
+            Controls.Add(radbutReservasActividad);
+            Controls.Add(radbutReservasMes);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "formPresentacionReservas";
             Text = "Hisotrico de reservas";
-            Load += formPresentacionReservas_Load;
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private RadioButton radbutTotalReservas;
-        private RadioButton radbutPorActividad;
+        private RadioButton radbutReservasMes;
+        private RadioButton radbutReservasActividad;
+        private Button button1;
+        private Button btnImprimir;
     }
 }
