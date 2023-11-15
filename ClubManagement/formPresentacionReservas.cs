@@ -11,23 +11,11 @@ namespace ClubManagement
 {
     public partial class formPresentacionReservas : Form
     {
-        private Chart chartReservasMes;
-        private Chart chartReservasActividad;
+        private Chart chartReservas;
 
         public formPresentacionReservas()
         {
             InitializeComponent();
-            InitializeCharts();
-            InitializeRadioButtons();
-
-            radbutTotalReservas.CheckedChanged += (s, e) => CargarDatos();
-
-        }
-
-        private void InitializeCharts()
-        {
-            chartReservasMes = InitializeChart("Total de Reservas por Mes");
-            chartReservasActividad = InitializeChart("Total de Reservas por Actividad");
 
             InicializarChart();
 
@@ -42,7 +30,7 @@ namespace ClubManagement
             chartReservas.Size = new System.Drawing.Size(500, 400);
             chartReservas.Location = new System.Drawing.Point(50, 50);
 
-            chart.Titles.Add(new Title(title));
+            this.Controls.Add(chartReservas);
 
             ConfigurarChartPorMes();
         }
@@ -179,10 +167,8 @@ namespace ClubManagement
 
         private void ImprimirGrafico(object sender, PrintPageEventArgs e)
         {
-            Chart chartAImprimir = radbutTotalReservas.Checked ? chartReservasMes : chartReservasActividad;
-
-            Bitmap bmp = new Bitmap(chartAImprimir.Width, chartAImprimir.Height);
-            chartAImprimir.DrawToBitmap(bmp, new Rectangle(0, 0, chartAImprimir.Width, chartAImprimir.Height));
+            Bitmap bmp = new Bitmap(chartReservas.Width, chartReservas.Height);
+            chartReservas.DrawToBitmap(bmp, new Rectangle(0, 0, chartReservas.Width, chartReservas.Height));
 
             e.Graphics.DrawImage(bmp, e.MarginBounds);
 
@@ -192,11 +178,4 @@ namespace ClubManagement
             e.Graphics.DrawString(tipoImpresion, font, Brushes.Black, new PointF(e.MarginBounds.Left, e.MarginBounds.Top - 40));
         }
     }
-}
-
-
-
-
-
-
 }
