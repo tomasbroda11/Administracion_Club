@@ -97,7 +97,7 @@ namespace ClubManagement
                 formReservas.Show();
                 this.Close();
             }
-            else MessageBox.Show("Ocurrio un problema, intente nuevamente");
+            else MessageBox.Show("Ocurrio un problema, intente nuevamente", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }

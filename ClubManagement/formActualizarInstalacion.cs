@@ -46,7 +46,7 @@ namespace ClubManagement
         {
             if (txtDescripcion.Text.Length == 0 || cbActividades.SelectedItem.ToString().Length == 0)
             {
-                MessageBox.Show("Complete todos los campos.");
+                MessageBox.Show("Complete todos los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error   );
             }
             else
             {

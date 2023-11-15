@@ -15,9 +15,11 @@ namespace ClubManagement
     public partial class formEditEntrenamiento : Form
     {
         Entrenamiento entrenamiento;
-        public formEditEntrenamiento(Entrenamiento ent)
+        Profesor profesor;
+        public formEditEntrenamiento(Entrenamiento ent, Profesor prof)
         {
             this.entrenamiento = ent;
+            this.profesor = prof;
             InitializeComponent();
         }
 
@@ -34,7 +36,7 @@ namespace ClubManagement
             cbHoraHasta.SelectedItem = this.entrenamiento.HoraHasta.ToString("hh:mm tt");
 
             cbInstalacion.Items.Clear();
-            List<Instalacion> instalaciones = new ABMInstalaciones().consultarInstalaciones(this.entrenamiento.Profesor.getActividad().getDescripcion());
+            List<Instalacion> instalaciones = new ABMInstalaciones().consultarInstalaciones(this.profesor.getActividad().getDescripcion());
 
             foreach (Instalacion i in instalaciones)
             {
@@ -47,7 +49,19 @@ namespace ClubManagement
             cbDia.SelectedItem = dias[this.entrenamiento.Dia];
         }
 
-        private void cbHoraDesde_SelectedValueChanged(object sender, EventArgs e)
+
+
+        private static List<TimeOnly> ObtenerTodasLasHoras()
+        {
+            return new List<TimeOnly>
+            {
+                new TimeOnly(8, 0), new TimeOnly(9, 0), new TimeOnly(10, 0), new TimeOnly(11, 0),
+                new TimeOnly(12, 0), new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),
+                new TimeOnly(16, 0), new TimeOnly(17, 0), new TimeOnly(18, 0), new TimeOnly(19, 0)
+            };
+        }
+
+        private void cbHoraDesde_SelectedValueChanged_1(object sender, EventArgs e)
         {
             cbHoraHasta.Items.Clear();
             List<TimeOnly> todasLasHoras = ObtenerTodasLasHoras();
@@ -62,17 +76,7 @@ namespace ClubManagement
             cbHoraHasta.BackColor = SystemColors.Window;
         }
 
-        private static List<TimeOnly> ObtenerTodasLasHoras()
-        {
-            return new List<TimeOnly>
-            {
-                new TimeOnly(8, 0), new TimeOnly(9, 0), new TimeOnly(10, 0), new TimeOnly(11, 0),
-                new TimeOnly(12, 0), new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),
-                new TimeOnly(16, 0), new TimeOnly(17, 0), new TimeOnly(18, 0), new TimeOnly(19, 0)
-            };
-        }
-
-        private void btnAceptar_Click(object sender, EventArgs e)
+        private void btnAceptar_Click_1(object sender, EventArgs e)
         {
             List<String> dias = new List<string> { "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado" };
             if (cbDia.SelectedItem != null && cbHoraDesde.SelectedItem != null && cbHoraHasta.SelectedItem != null && cbInstalacion.SelectedItem != null)
@@ -91,19 +95,24 @@ namespace ClubManagement
                     ent.Instalacion = instalacion;
                     ent.Profesor = this.entrenamiento.Profesor;
                     abme.actualizarEntrenamiento(ent);
+                    MessageBox.Show("Modificacion exitosa!");
+                    this.Hide();
+                    formEntrenamientos formEnt = new formEntrenamientos(this.profesor);
+                    formEnt.Show();
+                    this.Close();
                 }
                 else
                 {
-                    MessageBox.Show("La instalacion no esta disponible en ese dia y hora");
+                    MessageBox.Show("La instalacion no esta disponible en ese dia y hora", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("Elija opcion de instalacion, dia, hora desde, hora hasta");
+                MessageBox.Show("Elija opcion de instalacion, dia, hora desde, hora hasta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void btnAtras_Click(object sender, EventArgs e)
+        private void btnAtras_Click_1(object sender, EventArgs e)
         {
             this.Hide();
             formEntrenamientos formEnt = Application.OpenForms["formEntrenamientos"] as formEntrenamientos;

@@ -157,11 +157,12 @@ namespace Datos
             List<Reserva> reservas = new List<Reserva>();
 
             SqlConnection connection = Conexion.openConection();
-            string query = "select idReservas, res.estado,res.idInstalacion, ins.descripcion, res.dni, res.fecha, res.hora, idActividad from reservas res inner join instalaciones ins on res.idInstalacion = ins.idInstalacion where estado = 'PENDIENTE' and fecha = @fecha;";
+            string query = "select idReservas, res.estado,res.idInstalacion, ins.descripcion, res.dni, res.fecha, res.hora, idActividad from reservas res inner join instalaciones ins on res.idInstalacion = ins.idInstalacion where estado = 'PENDIENTE' and  fecha >= @fechaMin and fecha <= @fechaMax;";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
-                command.Parameters.AddWithValue("@fecha", fecha.Date);
+                command.Parameters.AddWithValue("@fechaMin", fecha.Date);
+                command.Parameters.AddWithValue("@fechaMax", fecha.Date.AddDays(1).AddTicks(-1));
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())

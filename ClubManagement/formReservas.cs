@@ -25,12 +25,10 @@ namespace ClubManagement
 
             List<Reserva> reservasList = aBMreservas.consultarReservaCliente(p);
 
-            // dataGridView1.DataSource = reservasList;
-
-
+           
             foreach (Reserva reserva in reservasList)
             {
-                // Crea una nueva fila para el DataGridView
+                
                 int rowIndex = dataGridView1.Rows.Add();
 
                 dataGridView1.Rows[rowIndex].Cells["Id"].Value = reserva.Id;
@@ -38,14 +36,13 @@ namespace ClubManagement
                 dataGridView1.Rows[rowIndex].Cells["fecha"].Value = reserva.Turno.ToString("dd/MM/yyyy HH:mm");
                 dataGridView1.Rows[rowIndex].Cells["instalacion"].Value = reserva.Instalacion.getDescripcion();
                 dataGridView1.Rows[rowIndex].Cells["actividad"].Value = reserva.Instalacion.Actividad.getDescripcion();
-                //dataGridView1.Rows[rowIndex].Cells["DescripcionInstalacion"].Value = reserva.Instalacion.getDescripcion();
-                // Agrega más columnas según sea necesario
+                
 
             }
             foreach (DataGridViewColumn column in dataGridView1.Columns)
             {
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                // O puedes utilizar otro modo, como DisplayedCells, DisplayedCellsExceptHeader o Fill
+               
             }
 
             this.persona = persona;

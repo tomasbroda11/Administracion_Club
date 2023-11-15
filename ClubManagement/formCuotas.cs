@@ -113,7 +113,7 @@ namespace ClubManagement
             else
             {
 
-                MessageBox.Show("El año seleccionado no es válido.");
+                MessageBox.Show("El año seleccionado no es válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

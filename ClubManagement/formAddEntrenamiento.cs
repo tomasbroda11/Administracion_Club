@@ -84,6 +84,11 @@ namespace ClubManagement
                     ent.Instalacion = instalacion;
                     ent.Profesor = this.profesor;
                     abme.CrearEntrenamiento(ent);
+                    MessageBox.Show("Entrenamiento creado con exito!");
+                    this.Hide();
+                    formEntrenamientos formEnt = new formEntrenamientos(this.profesor);
+                    formEnt.Show();
+                    this.Close();
                 }
                 else
                 {

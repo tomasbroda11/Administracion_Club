@@ -20,6 +20,31 @@ namespace ClubManagement
         {
             InitializeComponent();
             this.profesor = p;
+            ABMEntrenamiento abmEnt = new ABMEntrenamiento();
+            List<Entrenamiento> listaEntrenamientos = abmEnt.ConsultarEntrenamientosProfesor(p.getDni().ToString());
+
+            foreach (Entrenamiento entrenamiento in listaEntrenamientos)
+            {
+                
+                int rowIndex = dataGridView1.Rows.Add();
+
+                dataGridView1.Rows[rowIndex].Cells["Id"].Value = entrenamiento.IdEntrenamiento;
+                dataGridView1.Rows[rowIndex].Cells["Dia"].Value = entrenamiento.Dia;
+                dataGridView1.Rows[rowIndex].Cells["HoraDesde"].Value = entrenamiento.HoraDesde;
+                dataGridView1.Rows[rowIndex].Cells["HoraHasta"].Value = entrenamiento.HoraHasta;
+                dataGridView1.Rows[rowIndex].Cells["Actividad"].Value = entrenamiento.Instalacion.Actividad.getDescripcion();
+                dataGridView1.Rows[rowIndex].Cells["Instalacion"].Value = entrenamiento.Instalacion.getDescripcion();
+               
+            }
+            foreach (DataGridViewColumn column in dataGridView1.Columns)
+            {
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                
+            }
+
+
+
+
         }
 
         private void btnAtras_Click(object sender, EventArgs e)
@@ -30,29 +55,7 @@ namespace ClubManagement
             this.Close();
         }
 
-        private void formEntrenamientos_Load(object sender, EventArgs e)
-        {
-            ABMEntrenamiento abmE = new ABMEntrenamiento();
-
-            List<Entrenamiento> entrenamientosList = abmE.ConsultarEntrenamientosProfesor(this.profesor.getDni().ToString());
-
-            foreach (Entrenamiento ent in entrenamientosList)
-            {
-                int rowIndex = dataGridView1.Rows.Add();
-
-                dataGridView1.Rows[rowIndex].Cells["Id"].Value = ent.IdEntrenamiento;
-                dataGridView1.Rows[rowIndex].Cells["Dia"].Value = CultureInfo.CurrentCulture.DateTimeFormat.GetDayName((DayOfWeek)ent.Dia);
-                dataGridView1.Rows[rowIndex].Cells["HoraDesde"].Value = ent.HoraDesde;
-                dataGridView1.Rows[rowIndex].Cells["HoraHasta"].Value = ent.HoraHasta;
-                dataGridView1.Rows[rowIndex].Cells["Actividad"].Value = ent.Instalacion.Actividad.getDescripcion();
-                dataGridView1.Rows[rowIndex].Cells["Instalacion"].Value = ent.Instalacion.getDescripcion();
-
-            }
-            foreach (DataGridViewColumn column in dataGridView1.Columns)
-            {
-                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            }
-        }
+       
 
         private void btnAgregarEntrenamiento_Click(object sender, EventArgs e)
         {
@@ -78,7 +81,7 @@ namespace ClubManagement
                     fe.Show();
                     this.Close();
                 }
-                else MessageBox.Show("No existe el ID ingresado.");
+                else MessageBox.Show("No existe el ID ingresado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
         }
@@ -87,14 +90,15 @@ namespace ClubManagement
         {
             ABMEntrenamiento abme = new ABMEntrenamiento();
             Entrenamiento ent = abme.obtenerEntrenamientoXId(int.Parse(txtId.Text));
+            System.Diagnostics.Debug.WriteLine(ent.IdEntrenamiento);
             if (ent != null)
             {
                 this.Hide();
-                formEditEntrenamiento formEditE = new formEditEntrenamiento(ent);
+                formEditEntrenamiento formEditE = new formEditEntrenamiento(ent, this.profesor);
                 formEditE.Show();
                 this.Close();
             }
-            else MessageBox.Show("No existe el ID ingresado.");
+            else MessageBox.Show("No existe el ID ingresado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }

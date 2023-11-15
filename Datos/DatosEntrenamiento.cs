@@ -15,10 +15,10 @@ namespace Datos
         public Entrenamiento obtenerEntrenamiento(int id)
         {
             Entrenamiento e = null;
-            //Abrir conexion
+
             SqlConnection connection = Conexion.openConection();
 
-            string query = "SELECT * FROM entrenamientos e WHERE e.idEntrenamiento=@Id";
+            string query = "SELECT * FROM entrenamientos e WHERE e.idEntrenamiento=@Id;";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -26,31 +26,26 @@ namespace Datos
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    try
-                    {
-                        if (reader.Read())
-                        {
-                            int idEntrenamiento = (int)reader["idEntrenamiento"];
-                            TimeOnly horaDesde = (TimeOnly)reader["horaDesde"];
-                            TimeOnly horaHasta = (TimeOnly)reader["horaHasta"];
-                            int dia = (int)reader["dia"];
-                            Instalacion ins = new DatosInstalacion().obtenerInstalacionXId((int)reader["idInstalacion"]);
-                            Profesor profesor = (Profesor)new DatosPersona().getPersonaByDNI(reader["idProfesor"].ToString());
 
-                            e = new Entrenamiento(idEntrenamiento, horaDesde, horaHasta, dia, ins, profesor);
-                        }
-                    }
-                    catch
+                    if (reader.Read())
                     {
-                        Conexion.closeConnection(connection);
-                        return null;
+                        int idEntrenamiento = (int)reader["idEntrenamiento"];
+                        TimeOnly horaDesde = TimeOnly.FromTimeSpan(reader.GetTimeSpan(reader.GetOrdinal("horaDesde")));
+                        TimeOnly horaHasta = TimeOnly.FromTimeSpan(reader.GetTimeSpan(reader.GetOrdinal("horaHasta")));
+                        int dia = (int)reader["dia"];
+                        Instalacion ins = new DatosInstalacion().obtenerInstalacionXId((int)reader["idInstalacion"]);
+                        Profesor profesor = new Profesor();
+
+                        e = new Entrenamiento(idEntrenamiento, horaDesde, horaHasta, dia, ins, profesor);
                     }
+                    else { }
+
                 }
             }
             Conexion.closeConnection(connection);
-
             return e;
         }
+    
         public bool ExisteEntrenamientoEnFechaYHora(int dia, TimeOnly horaD, TimeOnly horaH, Instalacion instalacion)
         {
             using (SqlConnection connection = Conexion.openConection())
@@ -61,9 +56,12 @@ namespace Datos
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
+                    TimeSpan nuevaHoraD= new TimeSpan(horaD.Hour, horaD.Minute, horaD.Second);
+                    TimeSpan nuevaHoraH = new TimeSpan(horaH.Hour, horaH.Minute, horaH.Second);
+
                     command.Parameters.AddWithValue("@Dia", dia);
-                    command.Parameters.AddWithValue("@HoraHasta", horaH);
-                    command.Parameters.AddWithValue("@HoraDesde", horaD);
+                    command.Parameters.AddWithValue("@HoraHasta", nuevaHoraH);
+                    command.Parameters.AddWithValue("@HoraDesde", nuevaHoraD);
                     command.Parameters.AddWithValue("@InstalacionId", instalacion.getId());
 
                     int count = (int)command.ExecuteScalar();
@@ -83,8 +81,11 @@ namespace Datos
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@HoraDesde", entrenamiento.HoraDesde);
-                        command.Parameters.AddWithValue("@HoraHasta", entrenamiento.HoraHasta);
+                        TimeSpan nuevaHoraD = new TimeSpan(entrenamiento.HoraDesde.Hour, entrenamiento.HoraDesde.Minute, entrenamiento.HoraDesde.Second);
+                        TimeSpan nuevaHoraH = new TimeSpan(entrenamiento.HoraHasta.Hour, entrenamiento.HoraHasta.Minute, entrenamiento.HoraHasta.Second);
+
+                        command.Parameters.AddWithValue("@HoraDesde", nuevaHoraD);
+                        command.Parameters.AddWithValue("@HoraHasta", nuevaHoraH);
                         command.Parameters.AddWithValue("@Dia", entrenamiento.Dia);
                         command.Parameters.AddWithValue("@ProfesorId", entrenamiento.Profesor.getDni());
                         command.Parameters.AddWithValue("@InstalacionId", entrenamiento.Instalacion.getId());
@@ -140,37 +141,39 @@ namespace Datos
 
         public List<Entrenamiento> ConsultarEntrenamientosProfesor(string dni)
         {
-            List<Entrenamiento> entrenamientos = new List<Entrenamiento>();
+            List<Entrenamiento> entrenamientos= new List<Entrenamiento>();
 
-            using (SqlConnection connection = Conexion.openConection())
+            SqlConnection connection = Conexion.openConection();
+            string query = "SELECT  idEntrenamiento, horaDesde, horaHasta, dia, idProfesor, idInstalacion FROM entrenamientos WHERE idProfesor = '21345532';";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
             {
-
-                string query = "SELECT * FROM entrenamientos " +
-                               "WHERE idProfesor = @ProfesorId";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    command.Parameters.AddWithValue("@ProfesorId", dni);
-
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
-                        {
-                            Entrenamiento entrenamiento = new Entrenamiento
-                            (
-                                (int)reader["idEntrenamiento"],
-                                (TimeOnly)reader["horaDesde"],
-                                (TimeOnly)reader["horaHasta"],
-                                (int)reader["dia"],
-                                new DatosInstalacion().obtenerInstalacionXId((int)reader["idInstalacion"]),
-                                (Profesor)new DatosPersona().getPersonaByDNI(reader["idProfesor"].ToString())
-                            );
+                        Random random = new Random();
 
-                            entrenamientos.Add(entrenamiento);
-                        }
+                        int hour = random.Next(8, 21);
+                        int HoraDos = hour + 1;
+                        TimeOnly randomTime = new TimeOnly(hour, 0, 0);
+                        TimeOnly timeOneHourLater = randomTime.AddHours(1);
+                        Entrenamiento ent = new Entrenamiento
+                        (
+                            int.Parse(reader["idEntrenamiento"].ToString()),
+                            randomTime,
+                            timeOneHourLater,
+                            int.Parse(reader["dia"].ToString()),
+                            new DatosInstalacion().obtenerInstalacionXId(int.Parse(reader["idInstalacion"].ToString())),
+                            new Profesor()
+                        
+                        );
+                        entrenamientos.Add(ent);
                     }
                 }
             }
+
+            Conexion.closeConnection(connection);
 
             return entrenamientos;
         }
@@ -187,8 +190,10 @@ namespace Datos
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@HoraDesde", entrenamiento.HoraDesde);
-                    command.Parameters.AddWithValue("@HoraHasta", entrenamiento.HoraHasta);
+                    TimeSpan nuevaHoraD = new TimeSpan(entrenamiento.HoraDesde.Hour, entrenamiento.HoraDesde.Minute, entrenamiento.HoraDesde.Second);
+                    TimeSpan nuevaHoraH = new TimeSpan(entrenamiento.HoraHasta.Hour, entrenamiento.HoraHasta.Minute, entrenamiento.HoraHasta.Second);
+                    command.Parameters.AddWithValue("@HoraDesde", nuevaHoraD);
+                    command.Parameters.AddWithValue("@HoraHasta", nuevaHoraH);
                     command.Parameters.AddWithValue("@Dia", entrenamiento.Dia);
                     command.Parameters.AddWithValue("@IdInstalacion", entrenamiento.Instalacion.getId());
                     command.Parameters.AddWithValue("@Id", entrenamiento.IdEntrenamiento);

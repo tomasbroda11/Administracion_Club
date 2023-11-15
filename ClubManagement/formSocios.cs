@@ -71,7 +71,7 @@ namespace ClubManagement
                     formSoci.Show();
                     this.Close();
                 }
-                else MessageBox.Show("No existe el dni ingresado.");
+                else MessageBox.Show("No existe el dni ingresado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
 
@@ -88,7 +88,7 @@ namespace ClubManagement
                 formActualizarSocio formAcySoc = new formActualizarSocio(personaExiste);
                 formAcySoc.Show();
             }
-            else MessageBox.Show("No existe el dni ingresado.");
+            else MessageBox.Show("No existe el dni ingresado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
         }
     }

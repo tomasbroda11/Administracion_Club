@@ -30,19 +30,17 @@
         {
             btn_menu_salir = new Button();
             btnDatos = new Button();
-            button3 = new Button();
             btnEntrenamientos = new Button();
-            btnSocios = new Button();
-            btnProfesores = new Button();
             lblMenu = new Label();
             SuspendLayout();
             // 
             // btn_menu_salir
             // 
             btn_menu_salir.BackColor = Color.LightCoral;
-            btn_menu_salir.Location = new Point(258, 295);
+            btn_menu_salir.Location = new Point(296, 311);
+            btn_menu_salir.Margin = new Padding(3, 4, 3, 4);
             btn_menu_salir.Name = "btn_menu_salir";
-            btn_menu_salir.Size = new Size(161, 33);
+            btn_menu_salir.Size = new Size(184, 44);
             btn_menu_salir.TabIndex = 15;
             btn_menu_salir.Text = "Salir";
             btn_menu_salir.UseVisualStyleBackColor = false;
@@ -50,75 +48,46 @@
             // 
             // btnDatos
             // 
-            btnDatos.Location = new Point(258, 251);
+            btnDatos.Location = new Point(296, 218);
+            btnDatos.Margin = new Padding(3, 4, 3, 4);
             btnDatos.Name = "btnDatos";
-            btnDatos.Size = new Size(161, 33);
+            btnDatos.Size = new Size(184, 44);
             btnDatos.TabIndex = 14;
             btnDatos.Text = "Mis Datos";
             btnDatos.UseVisualStyleBackColor = true;
             btnDatos.Click += btnDatos_Click;
             // 
-            // button3
-            // 
-            button3.Location = new Point(258, 212);
-            button3.Name = "button3";
-            button3.Size = new Size(161, 33);
-            button3.TabIndex = 13;
-            button3.Text = "Actividades";
-            button3.UseVisualStyleBackColor = true;
-            // 
             // btnEntrenamientos
             // 
             btnEntrenamientos.BackColor = Color.FromArgb(192, 192, 255);
-            btnEntrenamientos.Location = new Point(258, 82);
+            btnEntrenamientos.Location = new Point(296, 157);
+            btnEntrenamientos.Margin = new Padding(3, 4, 3, 4);
             btnEntrenamientos.Name = "btnEntrenamientos";
-            btnEntrenamientos.Size = new Size(161, 33);
+            btnEntrenamientos.Size = new Size(184, 44);
             btnEntrenamientos.TabIndex = 12;
             btnEntrenamientos.Text = "Mis entrenamientos";
             btnEntrenamientos.UseVisualStyleBackColor = false;
             btnEntrenamientos.Click += btnEntrenamientos_Click;
             // 
-            // btnSocios
-            // 
-            btnSocios.Location = new Point(258, 134);
-            btnSocios.Name = "btnSocios";
-            btnSocios.Size = new Size(161, 33);
-            btnSocios.TabIndex = 11;
-            btnSocios.Text = "Socios";
-            btnSocios.UseVisualStyleBackColor = true;
-            // 
-            // btnProfesores
-            // 
-            btnProfesores.Location = new Point(258, 173);
-            btnProfesores.Name = "btnProfesores";
-            btnProfesores.Size = new Size(161, 33);
-            btnProfesores.TabIndex = 10;
-            btnProfesores.Text = "Profesores";
-            btnProfesores.UseVisualStyleBackColor = true;
-            // 
             // lblMenu
             // 
             lblMenu.AutoSize = true;
             lblMenu.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
-            lblMenu.Location = new Point(226, 19);
+            lblMenu.Location = new Point(258, 25);
             lblMenu.Name = "lblMenu";
-            lblMenu.Size = new Size(231, 37);
+            lblMenu.Size = new Size(285, 46);
             lblMenu.TabIndex = 9;
             lblMenu.Text = "Panel Profesores";
             // 
             // formMenuProfe
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(700, 338);
+            ClientSize = new Size(800, 451);
             Controls.Add(btn_menu_salir);
             Controls.Add(btnDatos);
-            Controls.Add(button3);
             Controls.Add(btnEntrenamientos);
-            Controls.Add(btnSocios);
-            Controls.Add(btnProfesores);
             Controls.Add(lblMenu);
-            Margin = new Padding(3, 2, 3, 2);
             Name = "formMenuProfe";
             Text = "Profesores";
             ResumeLayout(false);
@@ -129,10 +98,7 @@
 
         private Button btn_menu_salir;
         private Button btnDatos;
-        private Button button3;
         private Button btnEntrenamientos;
-        private Button btnSocios;
-        private Button btnProfesores;
         private Label lblMenu;
     }
 }

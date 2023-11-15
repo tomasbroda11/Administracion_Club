@@ -11,6 +11,7 @@ namespace Entidades
         {
             this.Actividad = actividad; 
         }
+        public Profesor() { }
         Actividad Actividad { get; set; }
         public Actividad getActividad()
         {

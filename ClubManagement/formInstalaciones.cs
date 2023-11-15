@@ -75,7 +75,7 @@ namespace ClubManagement
                 }
                 else
                 {
-                    MessageBox.Show("La instalacion no existe.");
+                    MessageBox.Show("La instalacion no existe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -94,7 +94,7 @@ namespace ClubManagement
             }
             else
             {
-                MessageBox.Show("La instalacion no existe.");
+                MessageBox.Show("La instalacion no existe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
