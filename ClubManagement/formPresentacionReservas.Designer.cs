@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             radbutTotalReservas = new RadioButton();
+            btnAtras = new Button();
             SuspendLayout();
             // 
             // radbutTotalReservas
@@ -43,11 +44,23 @@
             radbutTotalReservas.UseVisualStyleBackColor = true;
             radbutTotalReservas.CheckedChanged += radbutTotalReservas_CheckedChanged;
             // 
+            // btnAtras
+            // 
+            btnAtras.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            btnAtras.Location = new Point(882, 448);
+            btnAtras.Name = "btnAtras";
+            btnAtras.Size = new Size(123, 48);
+            btnAtras.TabIndex = 1;
+            btnAtras.Text = "Atras";
+            btnAtras.UseVisualStyleBackColor = true;
+            btnAtras.Click += btnAtras_Click;
+            // 
             // formPresentacionReservas
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1020, 606);
+            Controls.Add(btnAtras);
             Controls.Add(radbutTotalReservas);
             Name = "formPresentacionReservas";
             Text = "Hisotrico de reservas";
@@ -59,5 +72,6 @@
         #endregion
 
         private RadioButton radbutTotalReservas;
+        private Button btnAtras;
     }
 }

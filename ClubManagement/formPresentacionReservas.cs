@@ -187,6 +187,14 @@ namespace ClubManagement
 
             chartReservasActividad.Refresh();
         }
+
+        private void btnAtras_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            formMenuProfe fomrMenu = new formMenuProfe();
+            fomrMenu.ShowDialog();
+            this.Close();
+        }
     }
 
 
