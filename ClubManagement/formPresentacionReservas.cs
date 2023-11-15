@@ -2,13 +2,8 @@
 using Negocio;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -16,11 +11,23 @@ namespace ClubManagement
 {
     public partial class formPresentacionReservas : Form
     {
-        private Chart chartReservas;
+        private Chart chartReservasMes;
+        private Chart chartReservasActividad;
 
         public formPresentacionReservas()
         {
             InitializeComponent();
+            InitializeCharts();
+            InitializeRadioButtons();
+
+            radbutTotalReservas.CheckedChanged += (s, e) => CargarDatos();
+
+        }
+
+        private void InitializeCharts()
+        {
+            chartReservasMes = InitializeChart("Total de Reservas por Mes");
+            chartReservasActividad = InitializeChart("Total de Reservas por Actividad");
 
             InicializarChart();
 
@@ -35,7 +42,7 @@ namespace ClubManagement
             chartReservas.Size = new System.Drawing.Size(500, 400);
             chartReservas.Location = new System.Drawing.Point(50, 50);
 
-            this.Controls.Add(chartReservas);
+            chart.Titles.Add(new Title(title));
 
             ConfigurarChartPorMes();
         }
@@ -172,8 +179,10 @@ namespace ClubManagement
 
         private void ImprimirGrafico(object sender, PrintPageEventArgs e)
         {
-            Bitmap bmp = new Bitmap(chartReservas.Width, chartReservas.Height);
-            chartReservas.DrawToBitmap(bmp, new Rectangle(0, 0, chartReservas.Width, chartReservas.Height));
+            Chart chartAImprimir = radbutTotalReservas.Checked ? chartReservasMes : chartReservasActividad;
+
+            Bitmap bmp = new Bitmap(chartAImprimir.Width, chartAImprimir.Height);
+            chartAImprimir.DrawToBitmap(bmp, new Rectangle(0, 0, chartAImprimir.Width, chartAImprimir.Height));
 
             e.Graphics.DrawImage(bmp, e.MarginBounds);
 
@@ -185,3 +194,9 @@ namespace ClubManagement
     }
 }
 
+
+
+
+
+
+}
