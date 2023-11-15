@@ -191,7 +191,7 @@ namespace ClubManagement
         private void btnAtras_Click(object sender, EventArgs e)
         {
             this.Hide();
-            formMenuProfe fomrMenu = new formMenuProfe();
+            formMenuAdmin fomrMenu = new formMenuAdmin();
             fomrMenu.ShowDialog();
             this.Close();
         }
