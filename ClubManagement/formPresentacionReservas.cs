@@ -2,13 +2,8 @@
 using Negocio;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -16,41 +11,59 @@ namespace ClubManagement
 {
     public partial class formPresentacionReservas : Form
     {
-        private Chart chartReservas;
+        private Chart chartReservasMes;
+        private Chart chartReservasActividad;
 
 
         public formPresentacionReservas()
         {
             InitializeComponent();
+            InitializeCharts();
+            InitializeRadioButtons();
 
-            chartReservas = new Chart();
-            chartReservas.Size = new System.Drawing.Size(600, 400);
+            radbutTotalReservas.CheckedChanged += (s, e) => CargarDatos();
+
+        }
+
+        private void InitializeCharts()
+        {
+            chartReservasMes = InitializeChart("Total de Reservas por Mes");
+            chartReservasActividad = InitializeChart("Total de Reservas por Actividad");
+
+            Controls.Add(chartReservasMes);
+            Controls.Add(chartReservasActividad);
+            chartReservasActividad.Visible = false;
+        }
+
+        private Chart InitializeChart(string title)
+        {
+            Chart chart = new Chart
+            {
+                Size = new Size(600, 400)
+            };
 
             ChartArea chartArea = new ChartArea();
-            chartReservas.ChartAreas.Add(chartArea);
+            chart.ChartAreas.Add(chartArea);
 
-            Series series = new Series("Reservas");
-            series.ChartType = SeriesChartType.Column;
-            chartReservas.Series.Add(series);
+            Series series = new Series("Reservas")
+            {
+                ChartType = SeriesChartType.Column
+            };
+            chart.Series.Add(series);
 
             chartArea.AxisX.Title = "Meses o Actividades";
             chartArea.AxisY.Title = "Cantidad de Reservas";
 
-            this.Controls.Add(chartReservas);
+            chart.Titles.Add(new Title(title));
 
-            radbutTotalReservas = new RadioButton();
-            radbutTotalReservas.Text = "Total de Reservas por Mes";
-            radbutTotalReservas.Checked = true;
-            radbutTotalReservas.CheckedChanged += (s, e) => CargarDatos();
-            this.Controls.Add(radbutTotalReservas);
+            return chart;
+        }
 
-            radbutPorActividad = new RadioButton();
-            radbutPorActividad.Text = "Total de Reservas por Actividad";
-            radbutPorActividad.CheckedChanged += (s, e) => CargarDatos();
-            this.Controls.Add(radbutPorActividad);
+        private void InitializeRadioButtons()
+        {
 
             radbutTotalReservas.CheckedChanged += (s, e) => CargarDatos();
-            radbutPorActividad.CheckedChanged += (s, e) => CargarDatos();
+
         }
 
         private void formPresentacionReservas_Load(object sender, EventArgs e)
@@ -68,7 +81,8 @@ namespace ClubManagement
                 .GroupBy(r => radbutTotalReservas.Checked ? (object)r.Turno.Month : r.Instalacion.Actividad.getDescripcion())
                 .OrderBy(g => g.Key);
 
-            chartReservas.Series["Reservas"].Points.Clear();
+            chartReservasMes.Series["Reservas"].Points.Clear();
+            chartReservasActividad.Series["Reservas"].Points.Clear();
 
             foreach (var grupo in reservasAgrupadas)
             {
@@ -76,15 +90,18 @@ namespace ClubManagement
                     MesAMesString(Convert.ToInt32(grupo.Key)) :
                     grupo.Key.ToString();
 
+                int cantidadReservas = grupo.Count();
 
-                int cantidadReservas = radbutTotalReservas.Checked ?
-                    grupo.Count() :
-                    grupo.Count();
-
-                chartReservas.Series["Reservas"].Points.AddXY(etiqueta, cantidadReservas);
+                if (radbutTotalReservas.Checked)
+                {
+                    chartReservasMes.Series["Reservas"].Points.AddXY(etiqueta, cantidadReservas);
+                }
+                else
+                {
+                    chartReservasActividad.Series["Reservas"].Points.AddXY(etiqueta, cantidadReservas);
+                }
             }
         }
-
 
 
 
@@ -121,8 +138,10 @@ namespace ClubManagement
 
         private void ImprimirGrafico(object sender, PrintPageEventArgs e)
         {
-            Bitmap bmp = new Bitmap(chartReservas.Width, chartReservas.Height);
-            chartReservas.DrawToBitmap(bmp, new Rectangle(0, 0, chartReservas.Width, chartReservas.Height));
+            Chart chartAImprimir = radbutTotalReservas.Checked ? chartReservasMes : chartReservasActividad;
+
+            Bitmap bmp = new Bitmap(chartAImprimir.Width, chartAImprimir.Height);
+            chartAImprimir.DrawToBitmap(bmp, new Rectangle(0, 0, chartAImprimir.Width, chartAImprimir.Height));
 
             e.Graphics.DrawImage(bmp, e.MarginBounds);
 
@@ -138,8 +157,41 @@ namespace ClubManagement
 
         private void radbutPorActividad_CheckedChanged(object sender, EventArgs e)
         {
-            CargarDatos();
+            CargarDatosActivdad();
+        }
+
+        private void CargarDatosActivdad()
+        {
+            List<DataPoint> puntosReservas = new List<DataPoint>();
+            ABMreservas abmRes = new ABMreservas();
+            List<Reserva> reservas = abmRes.consultarReservas();
+
+            var reservasAgrupadas = reservas
+                .GroupBy(r => radbutTotalReservas.Checked ? (object)r.Turno.Month : r.Instalacion.Actividad.getDescripcion())
+                .OrderBy(g => g.Key);
+
+            chartReservasActividad.Series["Reservas"].Points.Clear();
+
+            foreach (var grupo in reservasAgrupadas)
+            {
+                string etiqueta = radbutTotalReservas.Checked ?
+                    MesAMesString(Convert.ToInt32(grupo.Key)) :
+                    grupo.Key.ToString();
+
+                int cantidadReservas = radbutTotalReservas.Checked ?
+                    grupo.Count() :
+                    grupo.Count();
+
+                chartReservasActividad.Series["Reservas"].Points.AddXY(etiqueta, cantidadReservas);
+            }
+
+            chartReservasActividad.Refresh();
         }
     }
-}
 
+
+
+
+
+
+}
